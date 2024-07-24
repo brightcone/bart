@@ -16,8 +16,8 @@ def init_state():
     """
     st.session_state.session_id = str(uuid.uuid4())  # Generate a unique session ID
     st.session_state.messages = []  # Initialize an empty list for storing chat messages
+    # st.session_state.citations = []  # Initialize an empty list for storing citations
     st.session_state.trace = {}  # Initialize an empty dictionary for storing trace information
-    st.session_state.in_progress = False  # Flag to indicate if a response is in progress
 
 # Configure the page layout and settings
 st.set_page_config(page_title=ui_title, page_icon=ui_icon, layout="wide")  # Set the page title, icon, and layout
@@ -31,6 +31,8 @@ if len(st.session_state.items()) == 0:
 with st.sidebar:
     st.title("Previous Conversations")  # Display the title for the memory management section
     
+    # Memory Tab
+    # st.subheader("Memory")
     # Display previous messages in the conversation memory tab
     if st.session_state.messages:
         i = 0
@@ -38,19 +40,19 @@ with st.sidebar:
             user_message = st.session_state.messages[i]
             assistant_message = st.session_state.messages[i + 1] if i + 1 < len(st.session_state.messages) else None
 
-            # Use a shortened version of the user message content as the title of the expander
-            expander_title = user_message['content'][:20] + '...' if len(user_message['content']) > 20 else user_message['content']
+            # Use the user message content as the title of the expander
+            expander_title = user_message['content'][:30] + '...' if len(user_message['content']) > 30 else user_message['content']
             
-            with st.expander(f"Q: {expander_title}", expanded=False):
+            with st.expander(f"Question: {expander_title}", expanded=False):
                 # Display user message
                 if user_message["role"] == "user":
                     st.markdown(f"**User:** {user_message['content']}", unsafe_allow_html=True)
                 
                 # Display assistant message
                 if assistant_message and assistant_message["role"] == "assistant":
-                    st.markdown(f"**Groot:** {assistant_message['content']}", unsafe_allow_html=True)
+                    st.markdown(f"**Assistant:** {assistant_message['content']}", unsafe_allow_html=True)
 
-                if st.button(f"Delete Conversation {i // 2 + 1}", key=f"delete_{i}"):
+                if st.button(f"Delete Conversation", key=f"delete_{i}"):
                     del st.session_state.messages[i:i + 2]  # Delete the user-assistant message pair
                     st.experimental_rerun()  # Refresh the app
             
@@ -78,13 +80,10 @@ if prompt := st.chat_input():
     with st.chat_message("user"):
         st.write(prompt)  # Show the user's input message
 
-    # Display placeholder
+    # Placeholder for the assistant's response
     with st.chat_message("assistant"):
         placeholder = st.empty()  # Create an empty placeholder for the response
-
-        # Display a loading indicator
-        placeholder.markdown("...", unsafe_allow_html=True)  
-        st.session_state.in_progress = True  # Set the flag to true to indicate response in progress
+        placeholder.markdown("...")  # Display a loading indicator
 
         # Invoke the Bedrock agent with the user prompt
         response = bedrock_agent_runtime.invoke_agent(
@@ -104,11 +103,6 @@ if prompt := st.chat_input():
 
         # Update session state with the new trace information
         st.session_state.trace = response["trace"]
-        st.session_state.in_progress = False  # Set the flag to false when response is completed
-
-
-    # st.session_state.citations = []  # Initialize an empty list for storing citations
-
 
 # Headers for trace types used in the sidebar
 # trace_type_headers = {
@@ -179,12 +173,20 @@ if prompt := st.chat_input():
 
 
 
+    # st.session_state.citations = []  # Initialize an empty list for storing citations
+
 # Questions 
 # what are the features of JIRA
 # what is bluejeans 
 # what is the covid policy 
 # how to record a zoom meeting
 # How to Add a File to Your Windows Favorites List
+# what is the cost of slack
+# What is the number for employee verification?
+# what is the lost and found policy
+# what are the employee perks 
+# how to download chrome
+
 
 
 
