@@ -6,9 +6,15 @@ from services import bedrock_agent_runtime  # Custom module for invoking Bedrock
 
 # Retrieve configuration from environment variables
 agent_id = os.environ.get("BEDROCK_AGENT_ID")  # The unique ID of the Bedrock Agent
-agent_alias_id = os.environ.get("BEDROCK_AGENT_ALIAS_ID", "TSTALIASID")  # Alias ID for testing
-ui_title = os.environ.get("BEDROCK_AGENT_TEST_UI_TITLE", "Agents for Amazon Bedrock Test UI")  # UI title
+agent_alias_id = os.environ.get("BEDROCK_AGENT_ALIAS_ID")  # Alias ID for testing
+ui_title = os.environ.get("BEDROCK_AGENT_TEST_UI_TITLE")  # UI title
 ui_icon = os.environ.get("BEDROCK_AGENT_TEST_UI_ICON")  # UI icon
+
+# URL of the image to display in the navbar
+navbar_image_url = "https://www.bart.gov/themes/custom/bart/logo.svg"
+
+# Update this URL to point to your .jpg file
+background_image_url = "https://www.bart.gov/sites/default/files/banner-home-lg.jpg"  # Change to your .jpg file URL
 
 def init_state():
     """
@@ -21,7 +27,73 @@ def init_state():
 
 # Configure the page layout and settings
 st.set_page_config(page_title=ui_title, page_icon=ui_icon, layout="wide")  # Set the page title, icon, and layout
-st.title(ui_title)  # Display the title at the top of the page
+
+# Add custom CSS for the black navbar, center title, and background image
+st.markdown(f"""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');  /* Import Roboto font */
+    
+    body {{
+        background-image: url('{background_image_url}');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        margin: 0;
+        padding: 0;
+        color: #fff;
+        font-family: 'Roboto', sans-serif;  /* Apply Roboto font to the body */
+    }}
+    .navbar {{
+        background-color: #000;
+        color: #fff;
+        padding: 10px;
+        text-align: center;
+        font-size: 16px;
+    }}
+    .navbar img {{
+        height: 50px;
+    }}
+    .title {{
+        text-align: center;
+        margin-top: 20px;
+        color: #fff;
+        font-size: 48px;
+        font-family: 'Roboto', sans-serif;  /* Apply Roboto font to the title */
+    }}
+    .title span {{
+        display: inline-block;
+    }}
+    .title .light-blue {{
+        color: #0099D8; 
+    }}
+    .title .black {{
+        color: #000;
+    }}
+    .groot {{
+        font-family: 'Roboto', sans-serif;  /* Apply Roboto font specifically to GROOT */
+        font-weight: 700;  /* Apply bold weight */
+        font-size: 60px;  /* Adjust font size */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  /* Add a subtle text shadow */
+    }}
+    </style>
+    <div class="navbar">
+        <img src="{navbar_image_url}" alt="BART Logo" />
+    </div>
+    """, unsafe_allow_html=True)
+
+# Function to create the alternating color title
+def generate_alternating_title(text):
+    title_html = ""
+    colors = ['black','light-blue']
+    
+    for i, char in enumerate(text):
+        color_class = colors[i % len(colors)]  # Alternate colors
+        title_html += f"<span class='{color_class}'>{char}</span>"
+    
+    return title_html
+
+# Display the title at the top of the page
+st.markdown(f"<h1 class='title groot'>{generate_alternating_title(ui_title)}</h1>", unsafe_allow_html=True)
 
 # Initialize session state if not already initialized
 if len(st.session_state.items()) == 0:
@@ -103,90 +175,3 @@ if prompt := st.chat_input():
 
         # Update session state with the new trace information
         st.session_state.trace = response["trace"]
-
-# Headers for trace types used in the sidebar
-# trace_type_headers = {
-#     "preProcessingTrace": "Pre-Processing",  # Pre-processing phase
-#     "orchestrationTrace": "Orchestration",  # Orchestration phase
-#     "postProcessingTrace": "Post-Processing"  # Post-processing phase
-# }
-
-# Trace information types to display
-# trace_info_types = ["invocationInput", "modelInvocationInput", "modelInvocationOutput", "observation", "rationale"]
-
-# Sidebar section for trace information
-# with st.sidebar:
-#     st.title("Trace")  # Display the title for the trace section
-
-#     # Show each trace type in separate sections
-#     step_num = 1  # Initialize step number for trace steps
-#     for trace_type in trace_type_headers:
-#         st.subheader(trace_type_headers[trace_type])  # Display subheader for each trace type
-
-#         # Check if the trace type is available in the session state
-#         if trace_type in st.session_state.trace:
-#             trace_steps = {}  # Initialize a dictionary to store trace steps
-
-#             # Organize traces by step, similar to how it is shown in the Bedrock console
-#             for trace in st.session_state.trace[trace_type]:
-#                 # Iterate over each trace information type
-#                 for trace_info_type in trace_info_types:
-#                     if trace_info_type in trace:
-#                         trace_id = trace[trace_info_type]["traceId"]  # Get the trace ID
-                        
-#                         # Append trace to the corresponding trace step
-#                         if trace_id not in trace_steps:
-#                             trace_steps[trace_id] = [trace]
-#                         else:
-#                             trace_steps[trace_id].append(trace)
-#                         break  # Stop after finding the first relevant trace_info_type
-
-#             # Display trace steps in JSON format similar to the Bedrock console
-#             for trace_id in trace_steps.keys():
-#                 with st.expander("Trace Step " + str(step_num), expanded=False):  # Create an expander for each trace step
-#                     for trace in trace_steps[trace_id]:
-#                         trace_str = json.dumps(trace, indent=2)  # Convert trace to JSON string with indentation
-#                         st.code(trace_str, language="json", line_numbers=trace_str.count("\n"))  # Display trace as JSON code
-#                 step_num += 1  # Increment step number
-#         else:
-#             st.text("None")  # Indicate that there are no traces available for this trace type
-
-#     # # Display citations section in the sidebar
-#     # st.subheader("Citations")  # Subheader for citations
-
-#     # # Check if any citations are available
-#     # if len(st.session_state.citations) > 0:
-#     #     citation_num = 1  # Initialize citation number
-
-#     #     # Iterate over citations and display each one
-#     #     for citation in st.session_state.citations:
-#     #         for retrieved_ref_num, retrieved_ref in enumerate(citation["retrievedReferences"]):
-#     #             with st.expander("Citation [" + str(citation_num) + "]", expanded=False):  # Expander for each citation
-#     #                 citation_str = json.dumps({
-#     #                     "generatedResponsePart": citation["generatedResponsePart"],  # Citation generated response part
-#     #                     "retrievedReference": citation["retrievedReferences"][retrieved_ref_num]  # Citation retrieved reference
-#     #                 }, indent=2)
-#     #                 st.code(citation_str, language="json", line_numbers=trace_str.count("\n"))  # Display citation as JSON code
-#     #             citation_num += 1  # Increment citation number
-#     # else:
-#     #     st.text("None")  # Indicate that there are no citations available
-
-
-
-    # st.session_state.citations = []  # Initialize an empty list for storing citations
-
-# Questions 
-# what are the features of JIRA
-# what is bluejeans 
-# what is the covid policy 
-# how to record a zoom meeting
-# How to Add a File to Your Windows Favorites List
-# what is the cost of slack
-# What is the number for employee verification?
-# what is the lost and found policy
-# what are the employee perks 
-# how to download chrome
-
-
-
-
