@@ -25,7 +25,10 @@ image_base64 = load_image(image_path)
 background_image = f"""
 <style>
 [data-testid="stAppViewContainer"] > .main {{
-    background-image: url("data:image/jpeg;base64,{image_base64}");
+    background-image: linear-gradient(
+        rgba(0, 0, 0, 0.5), 
+        rgba(0, 0, 0, 0.5)
+    ), url("data:image/jpeg;base64,{image_base64}");
     background-size: cover;  /* Ensure the image covers the entire viewport */
     background-position: center;  
     background-repeat: no-repeat;
@@ -119,24 +122,33 @@ st.markdown(f"""
         color: #0099D8;  /* Blue color for some elements in the footer */
     }}
     .chat-message.user {{
-        font-size: 20px;  /* Larger font size for readability */
-        font-weight: 700;  /* Bold text for emphasis */
-        font-family: 'Roboto', sans-serif;  /* Apply Roboto font to user messages */
-        background-color: #fff;  /* White background color for user messages */
-        padding: 10px;  /* Padding inside the message blocks */
-        border-radius: 8px;  /* Rounded corners for the message blocks */
-        margin-bottom: 10px;  /* Space between message blocks */
-        color: #000;  /* Black text color for contrast */
+        display: inline-block;  /* Adjust width based on content */
+        max-width: 80%;  /* Limit the maximum width */
+        word-wrap: break-word;  /* Ensure long words break to fit within the container */
+        font-size: 20px;
+        font-weight: 700;
+        font-family: 'Roboto', sans-serif;
+        background-color: #d4d4d4;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        color: #000;
+        text-align: right; /* Align user messages to the right */
+        padding-right: 50px; /* Add padding to the right */
     }}
     .chat-message.assistant {{
-        font-size: 20px;  /* Larger font size for readability */
-        font-weight: 700;  /* Bold text for emphasis */
-        font-family: 'Roboto', sans-serif;  /* Apply Roboto font to assistant messages */
-        background-color: #fff;  /* White background color for assistant messages */
-        padding: 10px;  /* Padding inside the message blocks */
-        border-radius: 8px;  /* Rounded corners for the message blocks */
-        margin-bottom: 10px;  /* Space between message blocks */
-        color: #000;  /* Black text color for contrast */
+        display: inline-block;  /* Adjust width based on content */
+        max-width: 80%;  /* Limit the maximum width */
+        word-wrap: break-word;  /* Ensure long words break to fit within the container */
+        font-size: 20px;
+        font-weight: 700;
+        font-family: 'Roboto', sans-serif;
+        background-color: white;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        color: #000;
+        text-align: left; /* Align assistant messages to the left */
     }}
     .memory-section {{
         font-size: 20px;  /* Match the font size of chat messages */
