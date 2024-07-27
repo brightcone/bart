@@ -76,10 +76,10 @@ st.markdown(f"""
         display: flex;
         align-items: center;  /* Vertically center the content */
         justify-content: center;  /* Horizontally center the content */
-        width: 100%;  /* Ensure the navbar spans the full width */
+        width: 100vw;  /* Ensure the navbar spans the full viewport width */
         position: fixed;  /* Fix the navbar to the viewport */
-        top: 45px;  /* Move the navbar to the top of the viewport */
-        left: 240px;  /* Align the navbar to the left */
+        top: 45px;  /* Align the navbar to the top of the viewport */
+        left: 240px;  /* Align the navbar to the left edge */
         z-index: 1000;  /* Ensure it stays on top of other content */
     }}
     .navbar img {{
@@ -87,7 +87,7 @@ st.markdown(f"""
     }}
     .title {{
         text-align: center;
-        margin-top: 100px;  /* Reduced margin-top to decrease the gap */
+        margin-top: 95px;  /* Reduced margin-top to decrease the gap */
         color: #000;  /* Set title color to black */
         font-size: 36px;  /* Decreased font size for the title */
         font-family: 'Roboto', sans-serif;  /* Apply Roboto font to the title */
@@ -115,8 +115,8 @@ st.markdown(f"""
         text-align: center;  /* Center the text in the footer */
         position: fixed;  /* Fix the footer to the bottom of the viewport */
         bottom: 0;  /* Align the footer to the bottom */
-        left: 240px;  /* Align the footer to the left to match the sidebar position */
-        width: calc(100% - 240px);  /* Adjust width to account for the sidebar */
+        left: 0;  /* Align the footer to the left edge */
+        width: 100vw;  /* Ensure the footer spans the full viewport width */
     }}
     .footer .footer-blue {{
         color: #0099D8;  /* Blue color for some elements in the footer */
@@ -128,11 +128,11 @@ st.markdown(f"""
         font-size: 20px;
         font-weight: 700;
         font-family: 'Roboto', sans-serif;
-        background-color: #d4d4d4;
+        background-color: white;
         padding: 10px;
         border-radius: 8px;
         margin-bottom: 10px;
-        color: #000;
+        color: black;
         text-align: right; /* Align user messages to the right */
         padding-right: 50px; /* Add padding to the right */
     }}
@@ -143,11 +143,11 @@ st.markdown(f"""
         font-size: 20px;
         font-weight: 700;
         font-family: 'Roboto', sans-serif;
-        background-color: white;
+        background-color: #808080;
         padding: 10px;
         border-radius: 8px;
         margin-bottom: 10px;
-        color: #000;
+        color: black;
         text-align: left; /* Align assistant messages to the left */
     }}
     .memory-section {{
@@ -182,6 +182,7 @@ st.markdown(f"""
         <p>Footer Content Here | <span class="footer-blue">Blue Accent</span></p>
     </div>
     """, unsafe_allow_html=True)
+
 
 
 
