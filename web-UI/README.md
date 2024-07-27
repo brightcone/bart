@@ -1,29 +1,55 @@
-# Agents for Amazon Bedrock Test UI
+# Streamlit Chat Interface with Bedrock Agent Integration
 
-A generic Streamlit UI for testing generative AI agents built using Agents for Amazon Bedrock. For more information, refer to the blog post [Developing a Generic Streamlit UI to Test Amazon Bedrock Agents](https://blog.avangards.io/developing-a-generic-streamlit-ui-to-test-amazon-bedrock-agents).
+This project is a web-based chat interface developed with Streamlit, integrated with a Bedrock Agent for interactive conversation. It provides a user-friendly interface to interact with the Bedrock Agent, manage chat sessions, and customize the appearance of the chat interface.
 
-# Prequisites
+## Features
 
-- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-- [Python 3](https://www.python.org/downloads/)
+- **Customizable Background**: Load and display a custom background image.
+- **Session Management**: Start new chat sessions, and view and resume previous sessions.
+- **Custom Styling**: Apply custom CSS for various UI elements including navbar, title, chat messages, and footer.
+- **Dynamic Title**: Generate a dynamic title with alternating color patterns.
+- **Chat Interface**: Display user and assistant messages in a styled chat interface.
+- **Real-time Interaction**: Send user inputs to the Bedrock Agent and display the agent's responses.
 
-# Running Locally
+## Getting Started
 
-1. Run the following `pip` command to install the dependencies:
+### Prerequisites
 
-   ```
-   pip install -r requirements.txt
-   ```
+- Python 3.x
+- Streamlit
+- Bedrock Agent runtime (custom module)
 
-2. Set the following environment variables:
-   - `BEDROCK_AGENT_ID` - The ID of the agent
-   - `BEDROCK_AGENT_ALIAS_ID` - The ID of the agent alias. The default `TSTALIASID` will be used if it is not set.
-   - The [AWS environment variables](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-envvars.html) that provides the credentials to your account. The principal must have the necessary permissions to invoke the Bedrock agent.
-3. (Optional) Set the folliowing environment variables to customize the UI:
-   - `BEDROCK_AGENT_TEST_UI_TITLE` - The page title. The default `Agents for Amazon Bedrock Test UI` will used if it is not set.
-   - `BEDROCK_AGENT_TEST_UI_ICON` - The favicon, such as `:bar_chart:`. The default Streamlit icon will be used if it is not set.
-4. Run the following command to start the Streamlit app:
+### Installation
 
-   ```
-   streamlit run app.py --server.port=8080 --server.address=localhost
-   ```
+1. Clone this repository:
+
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+Install the required Python packages:
+bash
+Copy code
+pip install streamlit
+Make sure to install the bedrock_agent_runtime custom module as well.
+Set up the environment variables:
+bash
+Copy code
+export BEDROCK_AGENT_ID=<your-bedrock-agent-id>
+export BEDROCK_AGENT_ALIAS_ID=<your-bedrock-agent-alias-id>
+export BEDROCK_AGENT_TEST_UI_TITLE=<your-ui-title>
+export BEDROCK_AGENT_TEST_UI_ICON=<your-ui-icon-url>
+Usage
+Run the Streamlit app:
+bash
+Copy code
+streamlit run app.py
+Open the provided URL in your web browser to interact with the chat interface.
+Configuration
+Background Image: Update the image_path variable in app.py with the path to your local image file.
+Navbar Image: Change the navbar_image_url variable to point to the desired image URL for the navbar.
+Customization
+CSS Styling: Modify the CSS rules within the <style> tag in app.py to adjust the appearance of the navbar, title, footer, chat messages, and other elements.
+Title Colors: Adjust the colors used in the generate_alternating_title function to match your desired theme.
+Notes
+The bedrock_agent_runtime module is a custom module for invoking the Bedrock Agent. Ensure it's properly configured in your environment.
+This project assumes you have basic familiarity with Streamlit and Python. If you encounter issues, consult the Streamlit documentation for additional guidance.
