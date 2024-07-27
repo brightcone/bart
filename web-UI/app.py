@@ -54,7 +54,6 @@ def init_state():
 # Add custom CSS for the larger navbar and smaller GROOT title
 # Add custom CSS for the footer and chat messages
 # Add custom CSS for the larger navbar, title, footer, and chat messages
-# Add custom CSS for the larger navbar, title, footer, and chat messages
 st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap');  /* Import Roboto font */
@@ -150,6 +149,22 @@ st.markdown(f"""
         color: black;
         text-align: left; /* Align assistant messages to the left */
     }}
+    .sidebar-button {{
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+        margin-bottom: 5px;
+        background-color: #f5f5f5;  /* Light grey background */
+        border: 1px solid #ddd;  /* Light border */
+        border-radius: 5px;  /* Rounded corners */
+        font-size: 16px;
+        color: #333;  /* Dark text color */
+    }}
+    .sidebar-button:hover {{
+        background-color: #e0e0e0;  /* Slightly darker grey on hover */
+        cursor: pointer;
+    }}
     .memory-section {{
         font-size: 20px;  /* Match the font size of chat messages */
         font-weight: 700;  /* Match the font weight of chat messages */
@@ -160,31 +175,51 @@ st.markdown(f"""
         margin-bottom: 10px;  /* Space between memory blocks */
         color: #000;  /* Black text color for contrast */
     }}
-    .sidebar {{
-        position: fixed;  /* Fix the sidebar to the viewport */
-        top: 0;  /* Align the sidebar to the top */
-        left: 0;  /* Align the sidebar to the left */
-        width: 240px;  /* Set the width of the sidebar */
-        height: 100vh;  /* Make the sidebar full height */
-        background-color: #f5f5f5;  /* Set the background color of the sidebar */
-        overflow-y: auto;  /* Enable vertical scrolling if needed */
-        padding: 20px;  /* Add padding inside the sidebar */
-        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);  /* Add a subtle shadow for depth */
-    }}
     </style>
     <div class="navbar">
         <img src="{navbar_image_url}" alt="BART Logo" />
-    </div>
-    <div class="sidebar">
-        <!-- Sidebar content here -->
     </div>
     <div class="footer">
         <p>Footer Content Here | <span class="footer-blue">Blue Accent</span></p>
     </div>
     """, unsafe_allow_html=True)
+# Create a sidebar
+sidebar = st.sidebar
+
+# Function to display previous sessions as clickable blocks with user input summary
+def display_previous_sessions():
+    if 'previous_sessions' in st.session_state:
+        for session in st.session_state.previous_sessions:
+            # Get the summary of the first user message
+            first_message = next((msg['content'] for msg in session['messages'] if msg['role'] == 'user'), 'No user messages')
+            message_summary = first_message[:50] + '...' if len(first_message) > 50 else first_message
+            
+            # Generate a unique key for each button
+            button_key = f"session_{session['session_id']}"
+            
+            # Display button with the user input summary
+            if sidebar.button(f"{message_summary}", key=button_key):
+                # Load the selected session's messages
+                st.session_state.messages = session['messages']
+                st.session_state.session_id = session['session_id']
 
 
+# Add a button to start a new session
+if sidebar.button('Start New Session'):
+    # Store the previous session's messages
+    if 'session_id' in st.session_state:
+        if 'previous_sessions' not in st.session_state:
+            st.session_state.previous_sessions = []
+        st.session_state.previous_sessions.append({
+            'session_id': st.session_state.session_id,
+            'messages': st.session_state.messages
+        })
 
+    # Start a new session
+    init_state()
+
+# Display the previous sessions in the sidebar as clickable blocks
+display_previous_sessions()
 
 # Function to create the title with specific color pattern for GROOT
 def generate_alternating_title(text):
@@ -212,38 +247,6 @@ st.markdown(f"<h1 class='title groot'>{generate_alternating_title(ui_title)}</h1
 # Initialize session state if not already initialized
 if len(st.session_state.items()) == 0:
     init_state()  # Call the initialization function
-
-# Sidebar for Reset Session and Memory Management
-with st.sidebar:
-    st.title("Previous Conversations")  # Display the title for the memory management section
-    
-    # Memory Tab
-    if st.session_state.messages:
-        i = 0
-        while i < len(st.session_state.messages):
-            user_message = st.session_state.messages[i]
-            assistant_message = st.session_state.messages[i + 1] if i + 1 < len(st.session_state.messages) else None
-
-            # Use the user message content as the title of the expander
-            expander_title = user_message['content'][:30] + '...' if len(user_message['content']) > 30 else user_message['content']
-            
-            with st.expander(f"{expander_title}", expanded=False):
-                # Display user message
-                if user_message["role"] == "user":
-                    st.markdown(f"<div class='memory-section'>{user_message['content']}</div>", unsafe_allow_html=True)
-                
-                # Display assistant message
-                if assistant_message and assistant_message["role"] == "assistant":
-                    st.markdown(f"<div class='memory-section'>{assistant_message['content']}</div>", unsafe_allow_html=True)
-
-                if st.button(f"Delete Conversation", key=f"delete_{i}"):
-                    del st.session_state.messages[i:i + 2]  # Delete the user-assistant message pair
-                    st.experimental_rerun()  # Refresh the app
-            
-            i += 2  # Increment by 2 to process the next pair of messages
-
-    else:
-        st.text("No messages in memory yet.")  # Indicate that there are no messages
 
 # Display the conversation
 for message in st.session_state.messages:
