@@ -4,6 +4,7 @@ import os
 from services import bedrock_agent_runtime  # Custom module for invoking Bedrock Agent
 import uuid
 
+
 # Retrieve configuration from environment variables
 agent_id = os.environ.get("BEDROCK_AGENT_ID")  # The unique ID of the Bedrock Agent
 agent_alias_id = os.environ.get("BEDROCK_AGENT_ALIAS_ID")  # Alias ID for testing
@@ -107,19 +108,6 @@ st.markdown(f"""
         font-size: 60px;  /* Decreased font size */
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  /* Add a subtle text shadow */
     }}
-    .footer {{
-        background-color: #000;  /* Completely black background for the footer */
-        color: #fff;  /* White text color */
-        padding: 10px;  /* Adjusted padding for better spacing */
-        text-align: center;  /* Center the text in the footer */
-        position: fixed;  /* Fix the footer to the bottom of the viewport */
-        bottom: 0;  /* Align the footer to the bottom */
-        left: 0;  /* Align the footer to the left edge */
-        width: 100vw;  /* Ensure the footer spans the full viewport width */
-    }}
-    .footer .footer-blue {{
-        color: #0099D8;  /* Blue color for some elements in the footer */
-    }}
     .chat-message.user {{
         display: inline-block;  /* Adjust width based on content */
         max-width: 80%;  /* Limit the maximum width */
@@ -179,9 +167,7 @@ st.markdown(f"""
     <div class="navbar">
         <img src="{navbar_image_url}" alt="BART Logo" />
     </div>
-    <div class="footer">
-        <p>Footer Content Here | <span class="footer-blue">Blue Accent</span></p>
-    </div>
+
     """, unsafe_allow_html=True)
 # Create a sidebar
 sidebar = st.sidebar
