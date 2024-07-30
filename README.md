@@ -1,5 +1,4 @@
 # GROOT - The BART's AI Helpdesk
-# Streamlit Chat Interface with Bedrock Agent Integration
 
 This project is a web-based chat interface developed with Streamlit, integrated with a Bedrock Agent for interactive conversation. It provides a user-friendly interface to interact with the Bedrock Agent, manage chat sessions, and customize the appearance of the chat interface.
 
