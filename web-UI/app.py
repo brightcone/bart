@@ -4,10 +4,6 @@ import os
 from services import bedrock_agent_runtime  # Custom module for invoking Bedrock Agent
 import uuid
 
-
-# Retrieve configuration from environment variables
-agent_id = os.environ.get("BEDROCK_AGENT_ID")  # The unique ID of the Bedrock Agent
-agent_alias_id = os.environ.get("BEDROCK_AGENT_ALIAS_ID")  # Alias ID for testing
 ui_title = os.environ.get("BEDROCK_AGENT_TEST_UI_TITLE")  # UI title
 ui_icon = os.environ.get("BEDROCK_AGENT_TEST_UI_ICON")  # UI icon
 
@@ -241,7 +237,10 @@ for message in st.session_state.messages:
         st.markdown(f"<div class='chat-message {color_class}'>{message['content']}</div>", unsafe_allow_html=True)
 
 # Capture user input and send it to the agent
-if prompt := st.chat_input():
+prompt = st.chat_input()
+
+# Check if prompt is not None before proceeding
+if prompt is not None:
     # Append user message to session state
     st.session_state.messages.append({"role": "user", "content": prompt})
     
@@ -254,14 +253,29 @@ if prompt := st.chat_input():
         placeholder = st.empty()  # Create an empty placeholder for the response
         placeholder.markdown("...")  # Display a loading indicator
 
+        # Retrieve configuration from environment variables
+        agent_id_1 = os.environ.get("BEDROCK_AGENT_ID")  # The unique ID of the first Bedrock Agent
+        agent_alias_id_1 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_1")  # Alias ID for the first agent (testing)
+        agent_id_2 = os.environ.get("BEDROCK_AGENT_ID_2")  # Unique ID for the second agent
+        agent_alias_id_2 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_2")  # Alias ID for the second agent (testing)
+
+        # Conditional logic to choose the agent based on the user's input
+        if "reset my password" in prompt.lower():
+            chosen_agent_id = agent_id_2
+            chosen_agent_alias_id = agent_alias_id_2
+            print("-------------------------------------reset my password-------------------------------------")
+        else:
+            chosen_agent_id = agent_id_1
+            chosen_agent_alias_id = agent_alias_id_1
+            print("-------------------------------------------GROOT-------------------------------------------")
+
         # Invoke the Bedrock agent with the user prompt
         response = bedrock_agent_runtime.invoke_agent(
-            agent_id,
-            agent_alias_id,
+            chosen_agent_id,
+            chosen_agent_alias_id,
             st.session_state.session_id,
             prompt
         )
-
         output_text = response["output_text"]  # Retrieve the output text from the agent response
 
         # Update placeholder with the completed output text
@@ -269,6 +283,3 @@ if prompt := st.chat_input():
 
         # Append assistant's message to session state
         st.session_state.messages.append({"role": "assistant", "content": output_text})
-
-        # Update session state with the new trace information
-        st.session_state.trace = response["trace"]
