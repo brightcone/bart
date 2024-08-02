@@ -47,6 +47,11 @@ def init_state():
     st.session_state.session_id = str(uuid.uuid4())  # Generate a unique session ID
     st.session_state.messages = []  # Initialize an empty list for storing chat messages
     st.session_state.trace = {}  # Initialize an empty dictionary for storing trace information
+    st.session_state.IT_agent_active = False  # New flag to track laptop task mode
+    st.session_state.password_reset_agent_active = False  # New flag to track VPN task mode
+    st.session_state.email_agent_active = False  # New flag to track printer task mode
+if len(st.session_state.items()) == 0:
+    init_state()  # Call the initialization function
 
 # Add custom CSS for the larger navbar and smaller GROOT title
 # Add custom CSS for the footer and chat messages
@@ -246,7 +251,10 @@ if prompt is not None:
     
     # Display user message in chat format
     with st.chat_message("user"):
-        st.markdown(f"<div class='chat-message user'>{prompt}</div>", unsafe_allow_html=True)  # Show the user's input message
+        st.markdown(
+            f"<div class='chat-message user'>{prompt}</div>", 
+            unsafe_allow_html=True
+        )  # Show the user's input message
 
     # Placeholder for the assistant's response
     with st.chat_message("assistant"):
@@ -254,20 +262,34 @@ if prompt is not None:
         placeholder.markdown("...")  # Display a loading indicator
 
         # Retrieve configuration from environment variables
-        agent_id_1 = os.environ.get("BEDROCK_AGENT_ID")  # The unique ID of the first Bedrock Agent
+        agent_id_1 = os.environ.get("BEDROCK_AGENT_ID_1")  # The unique ID of the first Bedrock Agent
         agent_alias_id_1 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_1")  # Alias ID for the first agent (testing)
         agent_id_2 = os.environ.get("BEDROCK_AGENT_ID_2")  # Unique ID for the second agent
         agent_alias_id_2 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_2")  # Alias ID for the second agent (testing)
 
         # Conditional logic to choose the agent based on the user's input
-        if "reset my password" in prompt.lower():
+        if "thanks" in prompt.lower() or "thank you" in prompt.lower():
+            st.session_state.IT_agent_active = False
+            st.session_state.password_reset_agent_active = False
+            st.session_state.email_agent_active = False
+            chosen_agent_id = agent_id_1
+            chosen_agent_alias_id = agent_alias_id_1
+            print("-------------------------------------SWITCHING BACK TO AGENT 1-------------------------------------")
+        elif (
+            st.session_state.IT_agent_active
+            or "laptop" in prompt.lower()
+            or "computer" in prompt.lower()
+            or "vpn" in prompt.lower()
+        ):
             chosen_agent_id = agent_id_2
             chosen_agent_alias_id = agent_alias_id_2
-            print("-------------------------------------reset my password-------------------------------------")
+            st.session_state.IT_agent_active = True  # Set the flag to True once Agent 2 is activated
+            print("-------------------------------------AGENT 2-------------------------------------")
+        
         else:
             chosen_agent_id = agent_id_1
             chosen_agent_alias_id = agent_alias_id_1
-            print("-------------------------------------------GROOT-------------------------------------------")
+            print("-------------------------------------------AGENT 1-------------------------------------------")
 
         # Invoke the Bedrock agent with the user prompt
         response = bedrock_agent_runtime.invoke_agent(
@@ -279,7 +301,10 @@ if prompt is not None:
         output_text = response["output_text"]  # Retrieve the output text from the agent response
 
         # Update placeholder with the completed output text
-        placeholder.markdown(f"<div class='chat-message assistant'>{output_text}</div>", unsafe_allow_html=True)
+        placeholder.markdown(
+            f"<div class='chat-message assistant'>{output_text}</div>", 
+            unsafe_allow_html=True
+        )
 
         # Append assistant's message to session state
         st.session_state.messages.append({"role": "assistant", "content": output_text})
