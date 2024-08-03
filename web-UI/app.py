@@ -50,6 +50,7 @@ def init_state():
     st.session_state.IT_agent_active = False  # New flag to track laptop task mode
     st.session_state.password_reset_agent_active = False  # New flag to track VPN task mode
     st.session_state.email_agent_active = False  # New flag to track printer task mode
+    
 if len(st.session_state.items()) == 0:
     init_state()  # Call the initialization function
 
@@ -268,8 +269,8 @@ if prompt is not None:
         agent_alias_id_2 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_2")  # Alias ID for the second agent (testing)
         agent_id_3 = os.environ.get("BEDROCK_AGENT_ID_3")  # Unique ID for the third agent
         agent_alias_id_3 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_3")  # Alias ID for the third agent (testing)
-        # agent_id_4 = os.environ.get("BEDROCK_AGENT_ID_4")  # Unique ID for the fourth agent
-        # agent_alias_id_4 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_4")  # Alias ID for the fourth agent (testing)
+        agent_id_4 = os.environ.get("BEDROCK_AGENT_ID_4")  # Unique ID for the fourth agent
+        agent_alias_id_4 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_4")  # Alias ID for the fourth agent (testing)
 
         # Conditional logic to choose the agent based on the user's input
         if "thanks" in prompt.lower() or "thank you" in prompt.lower():
@@ -298,15 +299,15 @@ if prompt is not None:
             chosen_agent_alias_id = agent_alias_id_3
             st.session_state.password_reset_agent_active = True
             print("-------------------------------------AGENT 3-------------------------------------")  
-        # elif(
-        #     st.session_state.email_agent_active
-        #     or "send an email" in prompt.lower()
-        #     or "draft an email" in prompt.lower()
-        # ):
-        #     chosen_agent_id = agent_id_4
-        #     chosen_agent_alias_id = agent_alias_id_4
-        #     st.session_state.email_agent_active = True
-        #     print("-------------------------------------AGENT 4-------------------------------------")            
+        elif(
+            st.session_state.email_agent_active
+            or "send an email" in prompt.lower()
+            or "draft an email" in prompt.lower()
+        ):
+            chosen_agent_id = agent_id_4
+            chosen_agent_alias_id = agent_alias_id_4
+            st.session_state.email_agent_active = True
+            print("-------------------------------------AGENT 4-------------------------------------")            
         else:
             chosen_agent_id = agent_id_1
             chosen_agent_alias_id = agent_alias_id_1
