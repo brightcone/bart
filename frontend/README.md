@@ -1,0 +1,1 @@
+This is where we will have the frontend - use nextjs or react to impelement the figma designs 
