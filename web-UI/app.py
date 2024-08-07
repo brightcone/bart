@@ -50,6 +50,7 @@ def init_state():
     st.session_state.IT_agent_active = False  # New flag to track laptop task mode
     st.session_state.password_reset_agent_active = False  # New flag to track VPN task mode
     st.session_state.email_agent_active = False  # New flag to track printer task mode
+    st.session_state.hardware_agent_active = False  # New flag to track printer task mode
     
 if len(st.session_state.items()) == 0:
     init_state()  # Call the initialization function
@@ -263,27 +264,29 @@ if prompt is not None:
         placeholder.markdown("...")  # Display a loading indicator
 
         # Retrieve configuration from environment variables
-        agent_id_1 = os.environ.get("BEDROCK_AGENT_ID_1")  # The unique ID of the first Bedrock Agent
-        agent_alias_id_1 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_1")  # Alias ID for the first agent (testing)
-        agent_id_2 = os.environ.get("BEDROCK_AGENT_ID_2")  # Unique ID for the second agent
-        agent_alias_id_2 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_2")  # Alias ID for the second agent (testing)
-        agent_id_3 = os.environ.get("BEDROCK_AGENT_ID_3")  # Unique ID for the third agent
-        agent_alias_id_3 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_3")  # Alias ID for the third agent (testing)
-        agent_id_4 = os.environ.get("BEDROCK_AGENT_ID_4")  # Unique ID for the fourth agent
-        agent_alias_id_4 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_4")  # Alias ID for the fourth agent (testing)
+        agent_id_1 = os.environ.get("BEDROCK_AGENT_ID_KB")  # The unique ID of the first Bedrock Agent
+        agent_alias_id_1 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_KB")  # Alias ID for the first agent (testing)
+        agent_id_2 = os.environ.get("BEDROCK_AGENT_ID_IT")  # Unique ID for the second agent
+        agent_alias_id_2 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_IT")  # Alias ID for the second agent (testing)
+        agent_id_3 = os.environ.get("BEDROCK_AGENT_ID_PASSWORD")  # Unique ID for the third agent
+        agent_alias_id_3 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_PASSWORD")  # Alias ID for the third agent (testing)
+        agent_id_4 = os.environ.get("BEDROCK_AGENT_ID_EMAIL")  # Unique ID for the fourth agent
+        agent_alias_id_4 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_EMAIL")  # Alias ID for the fourth agent (testing)
+        agent_id_5 = os.environ.get("BEDROCK_AGENT_ID_HARDWARE")    # Unique ID for the fifth agent
+        agent_alias_id_5 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_HARDWARE")  # Alias ID for the fifth agent (testing)
+
 
         # Conditional logic to choose the agent based on the user's input
-        if "thanks" in prompt.lower() or "thank you" in prompt.lower():
+        if "thanks" in prompt.lower() or "thank you" in prompt.lower() or "ok" in prompt.lower():
             st.session_state.IT_agent_active = False
             st.session_state.password_reset_agent_active = False
             st.session_state.email_agent_active = False
+            st.session_state.hardware_agent_active = False
             chosen_agent_id = agent_id_1
             chosen_agent_alias_id = agent_alias_id_1
             print("-------------------------------------SWITCHING BACK TO AGENT 1-------------------------------------")
         elif (
             st.session_state.IT_agent_active
-            or "laptop" in prompt.lower()
-            or "computer" in prompt.lower()
             or "vpn" in prompt.lower()
         ):
             chosen_agent_id = agent_id_2
@@ -306,7 +309,18 @@ if prompt is not None:
             chosen_agent_id = agent_id_4
             chosen_agent_alias_id = agent_alias_id_4
             st.session_state.email_agent_active = True
-            print("-------------------------------------AGENT 4-------------------------------------")            
+            print("-------------------------------------AGENT 4-------------------------------------")    
+        elif(
+            st.session_state.hardware_agent_active
+            or "hardware" in prompt.lower()
+            or "driver" in prompt.lower()
+            or "printer" in prompt.lower()
+            or "graphics" in prompt.lower()
+        ):
+            chosen_agent_id = agent_id_5
+            chosen_agent_alias_id = agent_alias_id_5
+            st.session_state.hardware_agent_active = True
+            print("-------------------------------------AGENT 5-------------------------------------")        
         else:
             chosen_agent_id = agent_id_1
             chosen_agent_alias_id = agent_alias_id_1
