@@ -264,16 +264,16 @@ if prompt is not None:
         placeholder.markdown("...")  # Display a loading indicator
 
         # Retrieve configuration from environment variables
-        agent_id_1 = os.environ.get("BEDROCK_AGENT_ID_KB")  # The unique ID of the first Bedrock Agent
-        agent_alias_id_1 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_KB")  # Alias ID for the first agent (testing)
-        agent_id_2 = os.environ.get("BEDROCK_AGENT_ID_IT")  # Unique ID for the second agent
-        agent_alias_id_2 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_IT")  # Alias ID for the second agent (testing)
-        agent_id_3 = os.environ.get("BEDROCK_AGENT_ID_PASSWORD")  # Unique ID for the third agent
-        agent_alias_id_3 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_PASSWORD")  # Alias ID for the third agent (testing)
-        agent_id_4 = os.environ.get("BEDROCK_AGENT_ID_EMAIL")  # Unique ID for the fourth agent
-        agent_alias_id_4 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_EMAIL")  # Alias ID for the fourth agent (testing)
-        agent_id_5 = os.environ.get("BEDROCK_AGENT_ID_HARDWARE")    # Unique ID for the fifth agent
-        agent_alias_id_5 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_HARDWARE")  # Alias ID for the fifth agent (testing)
+        # agent_id_1 = os.environ.get("BEDROCK_AGENT_ID_KB")  # The unique ID of the first Bedrock Agent
+        # agent_alias_id_1 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_KB")  # Alias ID for the first agent (testing)
+        # agent_id_2 = os.environ.get("BEDROCK_AGENT_ID_IT")  # Unique ID for the second agent
+        # agent_alias_id_2 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_IT")  # Alias ID for the second agent (testing)
+        # agent_id_3 = os.environ.get("BEDROCK_AGENT_ID_PASSWORD")  # Unique ID for the third agent
+        # agent_alias_id_3 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_PASSWORD")  # Alias ID for the third agent (testing)
+        # agent_id_4 = os.environ.get("BEDROCK_AGENT_ID_EMAIL")  # Unique ID for the fourth agent
+        # agent_alias_id_4 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_EMAIL")  # Alias ID for the fourth agent (testing)
+        # agent_id_5 = os.environ.get("BEDROCK_AGENT_ID_HARDWARE")    # Unique ID for the fifth agent
+        # agent_alias_id_5 = os.environ.get("BEDROCK_AGENT_ALIAS_ID_HARDWARE")  # Alias ID for the fifth agent (testing)
         combined_agent_id = os.environ.get("BEDROCK_AGENT_ID_COMBINED")  # Unique ID for the combined agent
         combined_agent_alias_id = os.environ.get("BEDROCK_AGENT_ALIAS_ID_COMBINED")  # Alias ID for the combined agent (testing)
 
