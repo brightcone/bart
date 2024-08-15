@@ -1,1 +1,0 @@
-This is where we will have the backend - where we use Django or Flask for the API gateway
