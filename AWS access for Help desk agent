@@ -1,0 +1,23 @@
+Service Category	Service	Purpose	Access Needed	Approximate Pricing (per month)
+Compute Services	Amazon EC2	Running virtual servers to host applications and LLM models.	Launch and manage EC2 instances, configure security groups, and manage elastic IPs.	$0.1344/hr - t4g.xlarge (Instance Type)
+Compute Services	AWS Lambda	Serverless computing for executing code in response to events.	Create, manage, and invoke Lambda functions.	$0.20
+Machine Learning Services	Amazon SageMaker	Building, training, and deploying machine learning models.	Create and manage notebooks, training jobs, endpoints, and model deployments.	$40.96
+Machine Learning Services	AWS Bedrock	Accessing foundational models (FMs) for generative AI applications.	Integrate and utilize foundational models.	Varies
+Machine Learning Services	Amazon Comprehend	Natural language processing tasks like sentiment analysis and entity recognition.	Analyze text data using Comprehend’s API.	$15.00
+Machine Learning Services	Amazon Polly	Converting text to speech for generating vocal responses.	Use Polly’s API to convert text input to speech.	$4.00
+Machine Learning Services	Amazon Lex	Building conversational interfaces with voice and text inputs.	Create and manage Lex bots and integrate them with other services.	$4.00
+Machine Learning Services	Amazon Kendra	Enterprise search to provide highly accurate search results across various data sources.	Configure and manage data sources, indexes, and query the Kendra API.	$7.00
+Storage Services	Amazon S3	Storing datasets, model artifacts, logs, and other assets.	Create and manage S3 buckets, set bucket policies, and upload/download data.	$2.30
+Database Services	Amazon RDS	Relational database management for structured data.	Launch and manage RDS instances, configure databases, and perform backups.	$12.15
+Database Services	Amazon DynamoDB	NoSQL database for unstructured or semi-structured data.	Create and manage DynamoDB tables, perform read/write operations.	$1.25
+Security and Monitoring	AWS Identity and Access Management (IAM)	Managing access and permissions to AWS resources.	Create and manage IAM users, roles, and policies.	$0.00 (free)
+Security and Monitoring	AWS CloudTrail	Logging and monitoring AWS account activity and API usage.	Enable and configure CloudTrail for logging.	$0.00 (free)
+Security and Monitoring	Amazon CloudWatch	Monitoring and observability of AWS resources and custom metrics.	Create and manage CloudWatch alarms, dashboards, and log groups.	$0.30
+Additional Services	Amazon API Gateway	Creating, deploying, and managing secure APIs.	Create and manage API endpoints, set up usage plans and API keys.	$3.50
+Additional Services	AWS Glue	ETL (extract, transform, load) tasks for preparing and loading data.	Create and manage Glue jobs, crawlers, and data catalogs.	$0.44
+Development and Collaboration Tools	AWS CodeCommit	Source control using Git repositories.	Create and manage repositories.	$0.00 (free)
+Development and Collaboration Tools	AWS CodeBuild	Continuous integration, automated build, and test environments.	Create and manage build projects and environments.	$1.00
+Development and Collaboration Tools	AWS CodeDeploy	Automated code deployments to various environments.	Create and manage deployment applications and groups.	$0.02
+Development and Collaboration Tools	AWS CodePipeline	Continuous delivery service to automate release pipelines.	Create and manage pipelines, stages, and actions.	$1.00
+Networking	Amazon VPC	Provisioning logically isolated network sections to deploy AWS resources securely.	Create and manage VPCs, subnets, route tables, and security groups.	$0.00 (free)
+Optional Third-Party Services	Third-party services	If using specific LLMs that require additional licenses and subscriptions.	Integrate with third-party APIs and manage usage.	Varies
