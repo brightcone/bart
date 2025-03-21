@@ -11,6 +11,10 @@ This project is a web-based chat interface developed with Streamlit, integrated 
 - **Chat Interface**: Display user and assistant messages in a styled chat interface.
 - **Real-time Interaction**: Send user inputs to the Bedrock Agent and display the agent's responses.
 
+# Bart AI Agent LLM Architecture
+
+![LLM Architecture to handle ai agents at scale](https://github.com/user-attachments/assets/a37edbe9-9cf2-444f-8847-a691f369cfe2)
+
 ## Getting Started
 
 ### Prerequisites
